@@ -1,0 +1,89 @@
+.banner {
+    /*background:#A2DCF0;*/
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e4f5fc+0,9fd8ef+72,2ab0ed+100 */
+    background: #e4f5fc;
+    /* Old browsers */
+    background: -moz-linear-gradient(45deg, #e4f5fc 0%, #9fd8ef 72%, #2ab0ed 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, #e4f5fc 0%, #9fd8ef 72%, #2ab0ed 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, #e4f5fc 0%, #9fd8ef 72%, #2ab0ed 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4f5fc', endColorstr='#2ab0ed', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+}
+
+.float-left {
+    float: left;
+}
+
+.content {
+    /*backgroud:#FAFAFA;*/
+    background-image: url(images/content-background.png);
+}
+
+.left-side-image {
+    background-color: #7CAEBA;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 0px;
+}
+
+.clear-both {
+    clear: both;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.color-red {
+    color: red;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+.content-image {
+    width: 175px;
+    height: 175px;
+}
+
+.middle-content-panel {
+    width: 391.25px;
+}
+
+.nav li a {
+    padding: 3px 8px;
+}
+
+body {
+    background-image: url('../images/content-background.png');
+}
+
+.middle-content-navbar li a {
+    padding: 2px 15px;
+}
+
+.list-group li a img {
+    width: 23px;
+    height: 20px;
+    color: black;
+}
+
+.list-group li a {
+    color: slategray;
+    font-size: 15px;
+}
+
+.left-side-list-group-li {
+    height: 39px;
+}
+
+.icon-size {
+    width: 45px;
+    height: 20px;
+}

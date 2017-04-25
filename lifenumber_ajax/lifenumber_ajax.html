@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.css">
+    <style>
+        body {
+            /*background-image: url("./images/background01.png");
+                    background-size:1650px;  
+                    background-repeat: no-repeat;
+                    background-position: center center; */         
+             
+            /*background: rgb(254, 187, 187);        
+            background: -moz-linear-gradient(45deg, rgba(254, 187, 187, 1) 0%, rgba(255, 92, 92, 1) 100%);           
+            background: -webkit-linear-gradient(45deg, rgba(254, 187, 187, 1) 0%, rgba(255, 92, 92, 1) 100%);            
+            background: linear-gradient(45deg, rgba(254, 187, 187, 1) 0%, rgba(255, 92, 92, 1) 100%);    
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#febbbb', endColorstr='#ff5c5c', GradientType=1);*/
+                               
+            background-image:url(./images/horoscope01.jpg);
+        }
+
+        h1 {
+            font-family: 微軟正黑體;
+            font-size: 55px;
+            color: white;
+        }
+
+        .panel {
+            width: 700px;
+            height: 120px;
+            font-family: 微軟正黑體;
+            font-size: 16px;
+        }
+
+        #image
+        {
+            height:500px;
+            width:380px;
+            border-radius:99px;
+            display:none;
+        }
+
+    </style>
+    <link>
+</head>
+
+<body>    
+    <div class="container">            
+        <div class="row">               
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                <h1>生命靈數</h1> <br />
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">請輸入出生日期</h3>
+            </div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="birthdate">
+                        
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="go();">點我分析</button>
+                    </span>
+                </div>
+                    
+            </div>
+        </div>
+
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">出生日期 與 星座</h3>
+            </div>
+            <div class="panel-body" id="resultBirthdate">
+                <!--<span class="label label-success">1993-11-13</span>-->
+            </div>
+        </div>
+
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">生命靈數</h3>
+            </div>
+            <div class="panel-body" id="resultIndex">
+                <!--...-->
+            </div>
+        </div>
+
+
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">評語</h3>
+            </div>
+            <div class="panel-body" id="resultComment">
+                <!--...-->
+            </div>
+        </div> 
+            </div>
+               
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <br /><br /><br /><br /><br />
+                <img id="image">      
+            </div>               
+        </div>
+                                 
+    </div>
+
+    
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.zh-TW.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.js"></script>
+    <script>
+          
+        $("#birthdate").datepicker({
+            language: 'zh-TW',
+            format: 'yyyy-mm-dd'
+        });
+
+        //按下分析按鈕 要執行:
+        function go()
+        {
+            //取得生日
+            var birthdate = $("#birthdate").val();
+                //  alert(birthdate); //檢查是否有取回出生日期
+
+            //欲利用 AJAX 抓星座資料(網址需先判斷為何星座,並找出英文星座名稱)
+            var name = enHoroscopeName(birthdate);
+                //  alert(name);  //檢查是否有取回星座英文名稱
+            
+            //以下是我自己 Github - GIST 的URL
+            var url = "https://gist.githubusercontent.com/delight1001003/2ca808a22abe6f91eaeea818c6aaef93/raw/40a7fcfa73858bafa8e74b8ad5d3b41e781ffe08/" + name + ".json";
+            
+            // AJAX連結資料
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: null,
+                dataType: "json",
+                error: function( result, status, xhr){
+                    // alert("無法取得 Server 上的資料");
+                    
+                    //以下用CDN連結 Sweet alert 套件
+                    swal('Oops...', '請點選欄位,依照格式輸入日期!', 'error')
+                },
+                success: function( result, status, xhr){
+                    //出生日期 及 星座
+                    $("#resultBirthdate").empty();
+
+                    $("<span></span>")
+                        .addClass("label label-warning")
+                        .html(birthdate)
+                        .prependTo("#resultBirthdate");
+                    
+                    $("<span></span>")
+                        .html( "&nbsp;&nbsp;" + result.name )
+                        .appendTo("#resultBirthdate");
+
+                    $("#resultBirthdate").css("font-size", "20px");
+                    
+
+                    //生命靈數
+                    var index = sumBirthdate(birthdate);
+                        // alert(index); //測試是否取得索引值
+                    $("#resultIndex")
+                        .html(index)
+                        .css("font-size", "20px");
+                    
+                    //生命靈數圖片
+                    $("#image")
+                        .attr("src" , "./images/"+ index + ".jpg")
+                        .show();
+
+                    //評語
+                    $("#resultComment")
+                        .html(result.lookup[index-1])
+                        .css("font-size", "20px");
+                }
+            });
+        }
+
+
+        //取得英文星座名稱
+        function enHoroscopeName(dateString)
+        {
+            //取得星座只需月份和日期
+            var date = new Date(dateString),
+                m = date.getMonth() + 1, //取回的值為 0~11,要加1才會正確
+                d = date.getDate();
+
+            var md = m * 100 + d;
+            if( md >= 121 && md <= 219)
+            {
+                return "aquarius";
+            }
+            else if( md >= 220 && md <= 320)
+            {
+                return "pisces";
+            }
+            else if( md >= 321 && md <= 419)
+            {
+                return "aries";
+            }
+            else if( md >= 420 && md <= 520)
+            {
+                return "taurus";
+            }
+            else if( md >= 521 && md <= 621)
+            {
+                return "gemini";
+            }
+            else if( md >= 622 && md <= 722)
+            {
+                return "cancer";
+            }
+            else if( md >= 723 && md <= 822)
+            {
+                return "leo";
+            }
+            else if( md >= 823 && md <= 922)
+            {
+                return "virgo";
+            }
+            else if( md >= 923 && md <= 1023)
+            {
+                return "libra";
+            }
+            else if( md >= 1024 && md <= 1121)
+            {
+                return "scorpio";
+            }
+            else if( md >= 1122 && md <= 1220)
+            {
+                return "sagittarius";
+            }
+            else if( md >= 1221 || md <=120 )
+            {
+                return "capricorn";
+            }
+        }
+
+
+
+        function sumBirthdate(dateString)
+        {
+            var date = new Date(dateString),
+                   y = date.getFullYear().toString(),
+                   m = ( date.getMonth() + 1 ).toString(),
+                   d = date.getDate().toString();
+            
+            var ymd = y + m + d;
+            return getIndex(ymd);
+        }
+
+        function getIndex(source)
+        {
+            var result = 0;
+
+            for( var i = 0 ; i < source.length ; i++)
+            {
+                result += parseInt( source[i] );        
+            }
+
+            if(result > 9)
+            {
+                result = getIndex( result.toString() );
+            }
+
+            return result;
+        }
+
+
+        //讓日期的輸入欄位 按 Enter 鍵就能分析
+        $("#birthdate").keyup(function(event){
+            if(event.keyCode == 13)
+            {
+                go();
+            }
+        });
+        
+    </script>
+</body>
+
+</html>

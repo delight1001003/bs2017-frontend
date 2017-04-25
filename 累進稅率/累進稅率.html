@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>累進稅率</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container-fluid {
+            background: powderblue;
+        }
+
+        h1 {
+            font-family: 微軟正黑體;
+        }
+
+        .btn-default {
+            color: white;
+            background-color: darkseagreen;
+            border-color: #ccc
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <h1>累進稅率</h1>
+
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="請輸入總收入" id="input">
+                
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="output()">計算稅額</button>
+                </span>
+
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="clearlist()">清除記錄</button>
+                </span>
+            </div>
+
+            <!--顯示結果-->
+            <ul class="list-group" id="results">
+                <!--<li class="list-group-item">Cras justo odio</li>-->
+            </ul>
+        </div>
+
+    </div>
+
+
+
+    <script>
+        //制定累進稅率規則
+        var taxRateLookup = [ //若有訂上下界,陣列的順序就沒影響,若只有訂下界,順序就要逐一排列
+            { min: 10310000, max: null, rate: 0.5},
+            { min: 4530000, max: 10310000, rate: 0.4},
+            { min: 2420000, max: 4530000, rate: 0.3},
+            { min: 1210000, max: 2420000, rate: 0.2},
+            { min: 540000, max: 1210000, rate: 0.12},
+            { min: 0, max: 540000, rate: 0.05}
+        ];
+            
+        //計算稅額
+        function calculate(input)
+        {
+            //宣告應繳金額變數
+            var spendmoney = 0;
+            
+            //宣告每個level的內容(方便程式碼運用)
+            var level;
+            
+            //判斷稅率
+            for( var i = 0 ; i < taxRateLookup.length ; i++ ) //跑每個level
+            {
+                level = taxRateLookup[i];
+                
+                if( level.max == null )  //如果
+                {
+                    if( input > level.min)
+                    {
+                        spendmoney += (input - level.min) * level.rate;
+                    }
+                }
+                else if(input < level.min)  //如果金額 小於min
+                {
+                    //PASS
+                }
+                else if( input > level.min && input < level.max )  //如果金額 界於min和max
+                {
+                    spendmoney += (input - level.min) * level.rate; //應繳金額 加上該級稅率金額
+                }
+                else if( input >= level.max)  //如果金額大於 max
+                {
+                    spendmoney += ( level.max - level.min) * level.rate; //應繳金額 加上該級稅率金額
+                }
+            }
+
+            //做天花板運算(無條件進位),再給回傳值
+            spendmoney = Math.ceil(spendmoney);
+            return spendmoney;
+        }
+
+        //產生記錄
+        function output()
+        {
+            //取得顯示結果的id
+            var results = document.getElementById("results");
+
+            //製作list的標籤內容
+            var list = document.createElement("li");
+            list.className = "list-group-item";
+
+            //把輸入值丟到計算稅額的函式
+            var input = document.getElementById("input").value;
+            
+            //得到應繳稅額
+            var spendmoney = calculate(input);
+
+            //顯示結果          
+            results.appendChild(list).innerHTML="總收入: " + input + " ， 應繳: " + spendmoney;
+
+        }
+        
+
+        //清除記錄
+        function clearlist()
+        {
+            document.getElementById("results").innerHTML="";
+        }
+    </script>
+</body>
+
+</html>

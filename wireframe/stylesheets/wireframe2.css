@@ -1,0 +1,75 @@
+body
+{
+    background-color:#d0d0d0;
+}
+
+.banner
+{
+    background-color:#110872;
+}
+
+.banner-panel1-left
+{
+    font-size:25px;
+}  
+
+.banner-panel1-right
+{
+    font-size:15px;
+}
+
+.banner-panel2
+{
+    width:310px;
+}
+
+.banner-panel3
+{
+    width:500px;
+    float:left;
+}
+
+.float-left
+{
+    float:left;   
+}
+
+.navbar
+{
+    width:100%;
+}
+
+.content-row3-left
+{
+    font-size:25px;
+}
+
+.content-row3-right
+{
+    font-size:15px;
+}
+
+.side-alart1
+{
+    overflow:auto;
+}
+
+.clear-left
+{
+    clear:left;
+}
+
+.clear-both
+{
+    clear:both;
+}
+
+.float-right
+{
+    float:right;
+}
+
+.right-side
+{
+    height:250px;
+}
